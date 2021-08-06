@@ -4,7 +4,7 @@
              x:Class="Avalonia.Navigation.App">
     
     <Application.DataTemplates>
-        <helper:ViewLocator/>
+        <helper:ViewLocator />
     </Application.DataTemplates>
     
     <Application.Styles>
