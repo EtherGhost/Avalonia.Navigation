@@ -1,0 +1,33 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewmodel="clr-namespace:Avalonia.Navigation.ViewModel"
+        xmlns:view="clr-namespace:Avalonia.Navigation.View"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="Avalonia.Navigation.View.MainWindow"
+        x:DataType="viewmodel:MainViewModel"
+        Title="Avalonia.Navigation">
+
+    <DockPanel>
+        <view:NavigationView DataContext="{CompiledBinding NavigationViewModel}" />
+
+        <TabControl Items="{CompiledBinding DetailViewModels}"
+                    SelectedItem="{CompiledBinding SelectedDetailViewModel, Mode=TwoWay}">
+            <TabControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{CompiledBinding Title}" />
+                        <TextBlock Text="*" IsVisible="{CompiledBinding IsChanged}" />
+                        <Button Margin="2,0,2,2"
+                                Background="Transparent"
+                                VerticalContentAlignment="Top"
+                                Command="{Binding CloseDetailViewCommand}"
+                                Content="X"
+                                FontSize="20" />
+                    </StackPanel>
+                </DataTemplate>
+            </TabControl.ItemTemplate>
+        </TabControl>
+    </DockPanel>
+</Window>

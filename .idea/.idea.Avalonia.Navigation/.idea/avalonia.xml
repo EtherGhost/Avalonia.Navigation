@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AvaloniaProject">
+    <option name="projectPerEditor">
+      <map>
+        <entry key="Avalonia.Navigation/App.axaml" value="Avalonia.Navigation/Avalonia.Navigation.csproj" />
+        <entry key="Avalonia.Navigation/View/MainWindow.axaml" value="Avalonia.Navigation/Avalonia.Navigation.csproj" />
+        <entry key="Avalonia.Navigation/View/NavigationView.axaml" value="Avalonia.Navigation/Avalonia.Navigation.csproj" />
+        <entry key="Avalonia.Navigation/View/ProjectDetailView.axaml" value="Avalonia.Navigation/Avalonia.Navigation.csproj" />
+        <entry key="Avalonia.Navigation/View/SystemDetailView.axaml" value="Avalonia.Navigation/Avalonia.Navigation.csproj" />
+      </map>
+    </option>
+  </component>
+</project>

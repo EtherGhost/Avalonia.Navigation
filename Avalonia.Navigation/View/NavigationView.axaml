@@ -1,0 +1,35 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewmodel="clr-namespace:Avalonia.Navigation.ViewModel"
+             mc:Ignorable="d" d:DesignWidth="200" d:DesignHeight="450"
+             x:Class="Avalonia.Navigation.View.NavigationView"
+             x:DataType="viewmodel:NavigationViewModel">
+
+    <UserControl.Resources>
+        <DataTemplate x:Key="NaviItemTemplate" DataType="viewmodel:NavigationItemViewModel">
+            <Button Command="{CompiledBinding OpenDetailViewCommand}"
+                    Content="{CompiledBinding DisplayMember}"
+                    FontSize="16" />
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                <ItemsControl Margin="10"
+                              ItemTemplate="{StaticResource NaviItemTemplate}"
+                              Items="{Binding Projects}" />
+            </ScrollViewer>
+
+            <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                <ItemsControl Margin="10"
+                              ItemTemplate="{StaticResource NaviItemTemplate}"
+                              Items="{Binding Systems}" />
+            </ScrollViewer>
+    </Grid>
+</UserControl>
