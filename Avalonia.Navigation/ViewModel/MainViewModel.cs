@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using AsyncAwaitBestPractices;
 using Autofac.Features.Indexed;
 using Avalonia.Navigation.Event;
 using Avalonia.Navigation.Service;
@@ -59,7 +60,9 @@ namespace Avalonia.Navigation.ViewModel
             //         e.Cancel = result == MessageDialogResult.Cancel;
             //     }
             // }
-            e.Cancel = false;
+            //e.Cancel = false;
+            
+            Closing(e).SafeFireAndForget(OnException);
         }
 
         public IDetailViewModel SelectedDetailViewModel
@@ -79,6 +82,21 @@ namespace Avalonia.Navigation.ViewModel
 
         public DelegateCommand<object> OpenDetailViewCommand { get; }
         public ICommand CreateNewDetailCommand { get; }
+        
+        private async Task Closing(CancelEventArgs e)
+        {
+            if (DetailViewModels.Count > 0 && DetailViewModels.Any(d => d.IsChanged && d.IsValid))
+            {
+                // var result = await _messageDialogService.ShowOkCancelDialog(this,
+                //     $"There are changes that have not yet been saved.{Environment.NewLine}" +
+                //     $"If you continue, they will be lost. Continue?", "Work will be lost! Continue?");
+                //
+                // if (result == MessageDialogResult.Cancel)
+                // {
+                //     e.Cancel = result == MessageDialogResult.Cancel;
+                // }
+            }
+        }
 
         private void AfterDetailDeleted(AfterDetailDeletedEventArgs args)
         {
@@ -129,6 +147,33 @@ namespace Avalonia.Navigation.ViewModel
             }
 
             SelectedDetailViewModel = detailViewModel;
+            
+            // If async await LoadAsync
+            //OpenDetailView(args).SafeFireAndForget(OnException);
+        }
+
+        private async Task OpenDetailView(OpenDetailViewEventArgs args)
+        {
+            /*var detailViewModel = DetailViewModels
+                .SingleOrDefault(vm => vm.Id == args.Id
+                                       && vm.GetType().Name == args.ViewModelName);
+
+            if (detailViewModel is null)
+            {
+                detailViewModel = _detailViewModelCreator[args.ViewModelName];
+
+                await detailViewModel.LoadAsync(args.Id);
+
+                DetailViewModels.Add(detailViewModel);
+            }
+
+            SelectedDetailViewModel = detailViewModel;*/
+        }
+
+        private void OnException(Exception ex)
+        {
+            // Do something clever with that exception
+            throw ex;
         }
     }
 }

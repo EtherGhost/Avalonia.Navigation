@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Avalonia.Navigation.Service;
 using Prism.Events;
 
@@ -17,22 +18,12 @@ namespace Avalonia.Navigation.ViewModel
             Title = $"ProjectDetailView ({id})";
         }
 
-        protected override bool OnDeleteCanExecute()
+        protected override Task OnSaveExecuteAsync()
         {
             throw new System.NotImplementedException();
         }
 
-        protected override void OnDeleteExecute()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        protected override bool OnSaveCanExecute()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        protected override void OnSaveExecuteAsync()
+        protected override Task OnDeleteExecuteAsync()
         {
             throw new System.NotImplementedException();
         }
@@ -42,9 +33,19 @@ namespace Avalonia.Navigation.ViewModel
             throw new System.NotImplementedException();
         }
 
+        protected override bool OnSaveCanExecute(object arg)
+        {
+            return false;
+        }
+
+        protected override bool OnDeleteCanExecute(object arg)
+        {
+            return false;
+        }
+
         protected override bool OnResetCanExecute()
         {
-            throw new System.NotImplementedException();
+            return false;
         }
     }
 }

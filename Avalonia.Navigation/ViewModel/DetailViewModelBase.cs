@@ -1,3 +1,6 @@
+using System;
+using System.Threading.Tasks;
+using AsyncAwaitBestPractices.MVVM;
 using Avalonia.Navigation.Event;
 using Avalonia.Navigation.Service;
 using Prism.Commands;
@@ -10,19 +13,33 @@ namespace Avalonia.Navigation.ViewModel
         protected readonly IEventAggregator EventAggregator;
         protected readonly IMessageDialogService MessageDialogService;
         private string _title;
+        private bool _isBusy;
         private bool _isChanged;
         private bool _isValid;
-        private int _id;
 
         public DetailViewModelBase(IEventAggregator eventAggregator, IMessageDialogService messageDialogService)
         {
             EventAggregator = eventAggregator;
             MessageDialogService = messageDialogService;
 
-            SaveCommand = new DelegateCommand(OnSaveExecuteAsync, OnSaveCanExecute);
-            DeleteCommand = new DelegateCommand(OnDeleteExecute, OnDeleteCanExecute);
-            ResetCommand = new DelegateCommand(OnResetExecute, OnResetCanExecute);
+            SaveAsyncCommand = new AsyncCommand(OnSaveExecuteAsync, OnSaveCanExecute, OnException);
+            DeleteAsyncCommand = new AsyncCommand(OnDeleteExecuteAsync, OnDeleteCanExecute, OnException);
             CloseDetailViewCommand = new DelegateCommand(CloseDetailViewExecute);
+            ResetCommand = new DelegateCommand(OnResetExecute, OnResetCanExecute);
+        }
+
+        public bool IsBusy
+        {
+            get => _isBusy;
+            protected set
+            {
+                if (_isBusy == value)
+                    return;
+                _isBusy = value;
+                OnPropertyChanged();
+
+                InvalidateCommands();
+            }
         }
 
         public bool IsChanged
@@ -34,7 +51,7 @@ namespace Avalonia.Navigation.ViewModel
                     return;
                 _isChanged = value;
                 OnPropertyChanged();
-                SaveCommand.RaiseCanExecuteChanged();
+                SaveAsyncCommand.RaiseCanExecuteChanged();
                 ResetCommand.RaiseCanExecuteChanged();
             }
         }
@@ -48,16 +65,12 @@ namespace Avalonia.Navigation.ViewModel
                     return;
                 _isValid = value;
                 OnPropertyChanged();
-                SaveCommand.RaiseCanExecuteChanged();
+                SaveAsyncCommand.RaiseCanExecuteChanged();
                 ResetCommand.RaiseCanExecuteChanged();
             }
         }
 
-        public int Id
-        {
-            get => _id;
-            protected set => _id = value;
-        }
+        public int Id { get; protected set; }
 
 
         public string Title
@@ -72,18 +85,19 @@ namespace Avalonia.Navigation.ViewModel
             }
         }
 
-        public DelegateCommand DeleteCommand { get; private set; }
-        public DelegateCommand ResetCommand { get; private set; }
+        public AsyncCommand SaveAsyncCommand { get; private set; }
+        public AsyncCommand DeleteAsyncCommand { get; private set; }
         public DelegateCommand CloseDetailViewCommand { get; private set; }
-        public DelegateCommand SaveCommand { get; private set; }
+        public DelegateCommand ResetCommand { get; private set; }
 
         public abstract void LoadAsync(int id);
 
-        protected abstract bool OnDeleteCanExecute();
-        protected abstract void OnDeleteExecute();
-        protected abstract bool OnSaveCanExecute();
-        protected abstract void OnSaveExecuteAsync();
+        protected abstract Task OnSaveExecuteAsync();
+        protected abstract Task OnDeleteExecuteAsync();
         protected abstract void OnResetExecute();
+        
+        protected abstract bool OnDeleteCanExecute(object arg);
+        protected abstract bool OnSaveCanExecute(object arg);
         protected abstract bool OnResetCanExecute();
 
         protected virtual void RaiseDetailDeletedEvent(int modelId)
@@ -140,6 +154,18 @@ namespace Avalonia.Navigation.ViewModel
                     Id = Id,
                     ViewModelName = GetType().Name
                 });
+        }
+
+        private void InvalidateCommands()
+        {
+            SaveAsyncCommand.RaiseCanExecuteChanged();
+            DeleteAsyncCommand.RaiseCanExecuteChanged();
+        }
+
+        private void OnException(Exception ex)
+        {
+            // Do something clever with that exception
+            throw ex;
         }
     }
 }
