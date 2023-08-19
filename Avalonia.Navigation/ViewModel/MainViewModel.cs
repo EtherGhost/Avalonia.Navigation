@@ -7,7 +7,6 @@ using System.Windows.Input;
 using AsyncAwaitBestPractices;
 using Autofac.Features.Indexed;
 using Avalonia.Navigation.Event;
-using Avalonia.Navigation.Service;
 using Prism.Commands;
 using Prism.Events;
 
@@ -18,16 +17,13 @@ namespace Avalonia.Navigation.ViewModel
         private IDetailViewModel _selectedDetailViewModel;
         private readonly IIndex<string, IDetailViewModel> _detailViewModelCreator;
         private readonly IEventAggregator _eventAggregator;
-        private readonly IMessageDialogService _messageDialogService;
 
         public MainViewModel(INavigationViewModel navigationViewModel,
             IIndex<string, IDetailViewModel> detailViewModelCreator,
-            IEventAggregator eventAggregator,
-            IMessageDialogService messageDialogService)
+            IEventAggregator eventAggregator)
         {
             _eventAggregator = eventAggregator;
             _detailViewModelCreator = detailViewModelCreator;
-            _messageDialogService = messageDialogService;
 
             DetailViewModels = new ObservableCollection<IDetailViewModel>();
 
@@ -85,7 +81,7 @@ namespace Avalonia.Navigation.ViewModel
         
         private async Task Closing(CancelEventArgs e)
         {
-            if (DetailViewModels.Count > 0 && DetailViewModels.Any(d => d.IsChanged && d.IsValid))
+            if (DetailViewModels.Count > 0 && DetailViewModels.Any(d => d is { IsChanged: true, IsValid: true }))
             {
                 // var result = await _messageDialogService.ShowOkCancelDialog(this,
                 //     $"There are changes that have not yet been saved.{Environment.NewLine}" +
@@ -129,7 +125,7 @@ namespace Avalonia.Navigation.ViewModel
             OnOpenDetailView(new OpenDetailViewEventArgs {ViewModelName = viewModelType.Name});
         }
 
-        private void OnOpenDetailViewExecute(object args)
+        private static void OnOpenDetailViewExecute(object args)
         {
         }
 
@@ -170,7 +166,7 @@ namespace Avalonia.Navigation.ViewModel
             SelectedDetailViewModel = detailViewModel;*/
         }
 
-        private void OnException(Exception ex)
+        private static void OnException(Exception ex)
         {
             // Do something clever with that exception
             throw ex;

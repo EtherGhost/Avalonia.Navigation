@@ -1,6 +1,5 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using Avalonia.Navigation.Service;
 using Avalonia.Navigation.View;
 using Avalonia.Navigation.ViewModel;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,15 +21,11 @@ namespace Avalonia.Navigation.Startup
             var builder = new ContainerBuilder();
 
             builder.RegisterType<EventAggregator>().As<IEventAggregator>().SingleInstance();
-            builder.RegisterType<MainWindow>().AsSelf();
+            builder.RegisterType<MainWindow>().AsSelf().SingleInstance();;
             builder.RegisterType<MainViewModel>().AsSelf();
             builder.RegisterType<NavigationViewModel>().As<INavigationViewModel>();
-            builder.RegisterType<MessageDialogService>().As<IMessageDialogService>();
-            
-            builder.RegisterType<ProjectDetailViewModel>()
-                .Keyed<IDetailViewModel>(nameof(ProjectDetailViewModel));
-            builder.RegisterType<SystemDetailViewModel>()
-                .Keyed<IDetailViewModel>(nameof(SystemDetailViewModel));
+            builder.RegisterType<ProjectDetailViewModel>().Keyed<IDetailViewModel>(nameof(ProjectDetailViewModel));
+            builder.RegisterType<SystemDetailViewModel>().Keyed<IDetailViewModel>(nameof(SystemDetailViewModel));
 
             builder.Populate(_serviceCollection);
             return builder.Build();

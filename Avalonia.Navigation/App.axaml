@@ -1,13 +1,19 @@
 <Application xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:helper="clr-namespace:Avalonia.Navigation.Helper"
+             xmlns:viewModel="clr-namespace:Avalonia.Navigation.ViewModel"
+             xmlns:view="clr-namespace:Avalonia.Navigation.View"
              x:Class="Avalonia.Navigation.App">
     
     <Application.DataTemplates>
-        <helper:ViewLocator />
+        <DataTemplate DataType="{x:Type viewModel:ProjectDetailViewModel}">
+            <view:ProjectDetailView />
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type viewModel:SystemDetailViewModel}">
+            <view:SystemDetailView />
+        </DataTemplate>
     </Application.DataTemplates>
     
     <Application.Styles>
-        <FluentTheme Mode="Light"/>
+        <FluentTheme/>
     </Application.Styles>
 </Application>

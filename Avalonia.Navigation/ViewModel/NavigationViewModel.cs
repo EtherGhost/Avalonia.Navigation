@@ -1,7 +1,6 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using Avalonia.Navigation.Event;
-using Avalonia.Navigation.Service;
 using Prism.Events;
 
 namespace Avalonia.Navigation.ViewModel
@@ -9,13 +8,10 @@ namespace Avalonia.Navigation.ViewModel
     public class NavigationViewModel : ViewModelBase, INavigationViewModel
     {
         private readonly IEventAggregator _eventAggregator;
-        private readonly IMessageDialogService _messageDialogService;
 
-        public NavigationViewModel(IEventAggregator eventAggregator,
-            IMessageDialogService messageDialogService)
+        public NavigationViewModel(IEventAggregator eventAggregator)
         {
             _eventAggregator = eventAggregator;
-            _messageDialogService = messageDialogService;
             
             _eventAggregator.GetEvent<AfterDetailSavedEvent>().Subscribe(AfterDetailSaved);
             _eventAggregator.GetEvent<AfterDetailDeletedEvent>().Subscribe(AfterDetailDeleted);
@@ -79,7 +75,7 @@ namespace Avalonia.Navigation.ViewModel
             }
         }
         
-        private void AfterDetailDeleted(ObservableCollection<NavigationItemViewModel> items,
+        private static void AfterDetailDeleted(ObservableCollection<NavigationItemViewModel> items,
             AfterDetailDeletedEventArgs args)
         {
             var item = items.SingleOrDefault(f => f.Id == args.Id);
@@ -118,7 +114,7 @@ namespace Avalonia.Navigation.ViewModel
             }
         }
         
-        private void OnOpenDetailView(OpenDetailViewEventArgs args)
+        private static void OnOpenDetailView(OpenDetailViewEventArgs args)
         {
         }
     }

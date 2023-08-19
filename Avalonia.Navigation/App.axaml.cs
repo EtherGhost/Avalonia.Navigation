@@ -24,7 +24,7 @@ namespace Avalonia.Navigation
             
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                desktop.MainWindow = new MainWindow();
+                desktop.MainWindow = Container.Resolve<MainWindow>();
             }
 
             base.OnFrameworkInitializationCompleted();

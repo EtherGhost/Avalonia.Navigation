@@ -4,7 +4,7 @@ using Avalonia.Markup.Xaml;
 
 namespace Avalonia.Navigation.View
 {
-    public class NavigationView : UserControl
+    public partial class NavigationView : UserControl
     {
         public NavigationView()
         {

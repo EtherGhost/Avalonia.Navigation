@@ -2,7 +2,6 @@ using System;
 using System.Threading.Tasks;
 using AsyncAwaitBestPractices.MVVM;
 using Avalonia.Navigation.Event;
-using Avalonia.Navigation.Service;
 using Prism.Commands;
 using Prism.Events;
 
@@ -11,16 +10,14 @@ namespace Avalonia.Navigation.ViewModel
     public abstract class DetailViewModelBase : ViewModelBase, IDetailViewModel
     {
         protected readonly IEventAggregator EventAggregator;
-        protected readonly IMessageDialogService MessageDialogService;
         private string _title;
         private bool _isBusy;
         private bool _isChanged;
         private bool _isValid;
 
-        public DetailViewModelBase(IEventAggregator eventAggregator, IMessageDialogService messageDialogService)
+        public DetailViewModelBase(IEventAggregator eventAggregator)
         {
             EventAggregator = eventAggregator;
-            MessageDialogService = messageDialogService;
 
             SaveAsyncCommand = new AsyncCommand(OnSaveExecuteAsync, OnSaveCanExecute, OnException);
             DeleteAsyncCommand = new AsyncCommand(OnDeleteExecuteAsync, OnDeleteCanExecute, OnException);
@@ -95,7 +92,7 @@ namespace Avalonia.Navigation.ViewModel
         protected abstract Task OnSaveExecuteAsync();
         protected abstract Task OnDeleteExecuteAsync();
         protected abstract void OnResetExecute();
-        
+
         protected abstract bool OnDeleteCanExecute(object arg);
         protected abstract bool OnSaveCanExecute(object arg);
         protected abstract bool OnResetCanExecute();
@@ -104,49 +101,45 @@ namespace Avalonia.Navigation.ViewModel
         {
             EventAggregator.GetEvent<AfterDetailDeletedEvent>()
                 .Publish(new AfterDetailDeletedEventArgs
-            {
-                Id = modelId,
-                ViewModelName = GetType().Name
-            });
+                {
+                    Id = modelId,
+                    ViewModelName = GetType().Name
+                });
         }
 
         protected virtual void RaiseDetailSavedEvent(int modelId, string displayMember, string tip)
         {
             EventAggregator.GetEvent<AfterDetailSavedEvent>()
                 .Publish(new AfterDetailSavedEventArgs
-            {
-                Id = modelId,
-                DisplayMember = displayMember,
-                ViewModelName = GetType().Name
-            });
+                {
+                    Id = modelId,
+                    DisplayMember = displayMember,
+                    ViewModelName = GetType().Name
+                });
         }
 
         protected virtual void RaiseCollectionSavedEvent()
         {
             EventAggregator.GetEvent<AfterCollectionSavedEvent>()
-              .Publish(new AfterCollectionSavedEventArgs
-              {
-                  ViewModelName = GetType().Name
-              });
+                .Publish(new AfterCollectionSavedEventArgs
+                {
+                    ViewModelName = GetType().Name
+                });
         }
 
         protected virtual void CloseDetailViewExecute()
         {
-#if WPF
             if (IsChanged)
             {
-                var result = MessageDialogService.ShowOkCancelDialog(
-                    "There are changes that have not yet been saved. If you continue, they will be lost. " +
-                    "Continue?", "Work will be lost! Continue?");
-            
-                if (result == MessageDialogResult.Cancel)
-                {
-                    return;
-                }
+                // var result = await _messageDialogService.ShowOkCancelDialog(this,
+                //     $"There are changes that have not yet been saved.{Environment.NewLine}" +
+                //     $"If you continue, they will be lost. Continue?", "Work will be lost! Continue?");
+                //
+                // if (result == MessageDialogResult.Cancel)
+                // {
+                //     e.Cancel = result == MessageDialogResult.Cancel;
+                // }
             }
-#else
-            // TODO: Implement MessageDialogService for Avalonia.UI
-#endif
 
             EventAggregator.GetEvent<AfterDetailClosedEvent>()
                 .Publish(new AfterDetailClosedEventArgs
@@ -162,7 +155,7 @@ namespace Avalonia.Navigation.ViewModel
             DeleteAsyncCommand.RaiseCanExecuteChanged();
         }
 
-        private void OnException(Exception ex)
+        private static void OnException(Exception ex)
         {
             // Do something clever with that exception
             throw ex;

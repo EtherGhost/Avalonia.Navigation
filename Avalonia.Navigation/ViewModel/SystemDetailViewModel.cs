@@ -1,21 +1,19 @@
 using System.Threading.Tasks;
-using Avalonia.Navigation.Service;
 using Prism.Events;
 
 namespace Avalonia.Navigation.ViewModel
 {
     public class SystemDetailViewModel : DetailViewModelBase
     {
-        public SystemDetailViewModel(IEventAggregator eventAggregator,
-            IMessageDialogService messageDialogService)
-            : base(eventAggregator, messageDialogService)
+        public SystemDetailViewModel(IEventAggregator eventAggregator)
+            : base(eventAggregator)
         {
         }
 
         public override void LoadAsync(int id)
         {
             Id = id;
-            Title = $"SystemDetailView ({id})";
+            Title = $"SystemDetailView with ID: ({id})";
         }
 
         protected override Task OnSaveExecuteAsync()

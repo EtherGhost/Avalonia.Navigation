@@ -7,7 +7,7 @@ using Avalonia.Navigation.ViewModel;
 
 namespace Avalonia.Navigation.View
 {
-    public class MainWindow : Window
+    public partial class MainWindow : Window
     {
         private readonly MainViewModel _viewModel;
         
@@ -19,20 +19,20 @@ namespace Avalonia.Navigation.View
             InitializeComponent();
             
             Opened += MainWindow_Loaded;
+            Closing += MainWindow_Closing;
 #if DEBUG
             this.AttachDevTools();
 #endif
         }
 
+        private void MainWindow_Closing(object? sender, WindowClosingEventArgs e)
+        {
+            _viewModel.OnClosing(e);
+        }
+
         private void MainWindow_Loaded(object? sender, EventArgs e)
         {
             _viewModel.LoadAsync();
-        }
-
-        protected override void OnClosing(CancelEventArgs e)
-        {
-            base.OnClosing(e);
-            _viewModel.OnClosing(e);
         }
 
         private void InitializeComponent()

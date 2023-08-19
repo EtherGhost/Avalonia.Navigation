@@ -5,14 +5,15 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="AsyncAwaitBestPractices" Version="6.0.3" />
-        <PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="6.0.3" />
-        <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="7.2.0" />
-        <PackageReference Include="Avalonia" Version="0.10.10" />
-        <PackageReference Include="Avalonia.Desktop" Version="0.10.10" />
-        <PackageReference Include="Avalonia.Diagnostics" Version="0.10.10" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+        <PackageReference Include="AsyncAwaitBestPractices" Version="6.0.6" />
+        <PackageReference Include="AsyncAwaitBestPractices.MVVM" Version="6.0.6" />
+        <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
+        <PackageReference Include="Avalonia" Version="11.0.4" />
+        <PackageReference Include="Avalonia.Desktop" Version="11.0.4" />
+        <PackageReference Include="Avalonia.Diagnostics" Version="11.0.4" />
+        <PackageReference Include="Avalonia.Themes.Fluent" Version="11.0.4" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
         <PackageReference Include="Prism.Autofac.Avalonia" Version="7.1.0.431" />
     </ItemGroup>
     <ItemGroup>

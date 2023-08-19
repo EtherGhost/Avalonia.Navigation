@@ -23,13 +23,13 @@
             <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                 <ItemsControl Margin="10"
                               ItemTemplate="{StaticResource NaviItemTemplate}"
-                              Items="{Binding Projects}" />
+                              ItemsSource="{Binding Projects}" />
             </ScrollViewer>
 
             <ScrollViewer Grid.Row="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
                 <ItemsControl Margin="10"
                               ItemTemplate="{StaticResource NaviItemTemplate}"
-                              Items="{Binding Systems}" />
+                              ItemsSource="{Binding Systems}" />
             </ScrollViewer>
     </Grid>
 </UserControl>

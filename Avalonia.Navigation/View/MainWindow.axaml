@@ -8,11 +8,11 @@
         x:Class="Avalonia.Navigation.View.MainWindow"
         x:DataType="viewmodel:MainViewModel"
         Title="Avalonia.Navigation">
-
+    
     <DockPanel>
         <view:NavigationView DataContext="{CompiledBinding NavigationViewModel}" />
 
-        <TabControl Items="{CompiledBinding DetailViewModels}"
+        <TabControl ItemsSource="{CompiledBinding DetailViewModels}"
                     SelectedItem="{CompiledBinding SelectedDetailViewModel, Mode=TwoWay}">
             <TabControl.ItemTemplate>
                 <DataTemplate>
@@ -22,7 +22,8 @@
                         <Button Margin="2,0,2,2"
                                 Background="Transparent"
                                 VerticalContentAlignment="Top"
-                                Command="{Binding CloseDetailViewCommand}"
+                                Command="{CompiledBinding CloseDetailViewCommand}"
+                                x:DataType="viewmodel:DetailViewModelBase"
                                 Content="X"
                                 FontSize="20" />
                     </StackPanel>
